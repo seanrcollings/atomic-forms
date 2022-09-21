@@ -14,27 +14,44 @@ import {
   RadioGroup,
   Radio,
   ToggleSwitch,
+  CustomSelect,
+  Option,
 } from "atomic-elements";
+import FormTesting from "./FormTesting";
 
 function App() {
-  const [currentTab, setCurrentTab] = useState("inputs");
+  const [currentTab, setCurrentTab] = useState("form");
 
   const [radioValue, setRadioValue] = useState("opt1");
   const [toggleChecked, setToggleChecked] = useState(false);
+  const [number, setNumber] = useState(0);
+  const [selectValue, setSelectValue] = useState<string | null>("val1");
 
   return (
     <div className="padder">
       <Tabs
-        tabs={{ inputs: { label: "Inputs" }, buttons: { label: "Buttons" } }}
+        tabs={{
+          inputs: { label: "Inputs" },
+          buttons: { label: "Buttons" },
+          form: { label: "Form" },
+        }}
         currentTab={currentTab}
         onChange={setCurrentTab}
       >
         <Tab name="inputs">
           <div className="padder">
-            <TextInput label="Text Input" />
+            <TextInput label="Text Input" size="medium" />
           </div>
           <div className="padder">
-            <NumberInput label="Number Input" />
+            <NumberInput
+              label="Number Input"
+              max={10}
+              value={number}
+              onChange={(v) => {
+                console.log(v);
+                setNumber(v);
+              }}
+            />
           </div>
           <div className="padder">
             <RadioGroup
@@ -55,18 +72,32 @@ function App() {
               onChange={setToggleChecked}
             />
           </div>
+          <div className="padder">
+            <CustomSelect
+              label={"Custom Select"}
+              value={selectValue}
+              onChange={setSelectValue}
+            >
+              <Option value="val1">Value 1</Option>
+              <Option value="val2">Value 2</Option>
+              <Option value="val3">Value 3</Option>
+            </CustomSelect>
+          </div>
         </Tab>
         <Tab name="buttons">
           <div className="padder">
             <Button>Primary</Button>
-            <Button className="secondary">Secondary</Button>
-            <Button className="success">Success</Button>
-            <Button className="error">Error</Button>
-            <Button className="inverted">Inverted</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="success">Success</Button>
+            <Button variant="error">Error</Button>
+            <Button variant="inverted">Inverted</Button>
           </div>
           <div className="padder">
             <IconButton icon="more_vert" ariaLabel="move" />
           </div>
+        </Tab>
+        <Tab name="form">
+          <FormTesting />
         </Tab>
       </Tabs>
     </div>
